@@ -29,7 +29,7 @@ Merging a PR does not deploy anything.
    `kubectl apply -f clusters/kubernetes/storageclass.yaml`.
    The StorageClass itself does not create an EBS volume.
 3. Publish application images and apply the app manifests from their respective repositories.
-4. Before applying this Ingress, verify both Services have ready endpoints and all four ACM certificates are ISSUED in us-east-1. The personal site certificate and workload are prerequisites for the henryfranco.dev route.
+4. Before applying this Ingress, verify both Services have ready endpoints and all three ACM certificates are ISSUED in us-east-1. The personal site certificate and workload are prerequisites for the henryfranco.dev route.
 5. Review and apply the shared Ingress:
 
 ```bash
@@ -74,3 +74,8 @@ curl -fsS --connect-to "henryfranco.com:443:${ALB_HOST}:443" https://henryfranco
 
 There is no redirect between .com and .dev. The existing HTTP-to-HTTPS rule
 continues to preserve the hostname. No www hostname is added.
+
+## Retire the old Spotify subdomain
+
+This Ingress removes its old host rule and TLS host. Wait for the ALB controller
+to detach that certificate before applying [Terraform #24](https://github.com/hgfranco/terraform/pull/24), which removes the unused DNS CNAME and dedicated certificate. The active Spotify apex route stays in place.

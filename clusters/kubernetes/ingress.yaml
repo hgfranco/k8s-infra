@@ -13,21 +13,10 @@ spec:
   ingressClassName: alb
   tls:
     - hosts:
-        - k8s.whatishenrylisteningto.com
         - whatishenrylisteningto.com
         - henryfranco.dev
         - henryfranco.com
   rules:
-    - host: k8s.whatishenrylisteningto.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: spotify-now-playing
-                port:
-                  number: 80
     - host: whatishenrylisteningto.com
       http:
         paths:
