@@ -1,9 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: spotify-now-playing
+  name: spotify-public
   namespace: spotify-now-playing
   annotations:
+    alb.ingress.kubernetes.io/group.name: public-applications
+    alb.ingress.kubernetes.io/load-balancer-name: kubernetes-public-apps
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: instance
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
@@ -14,8 +16,6 @@ spec:
   tls:
     - hosts:
         - whatishenrylisteningto.com
-        - henryfranco.dev
-        - henryfranco.com
   rules:
     - host: whatishenrylisteningto.com
       http:
@@ -25,25 +25,5 @@ spec:
             backend:
               service:
                 name: spotify-now-playing
-                port:
-                  number: 80
-    - host: henryfranco.dev
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: henryfranco-dev
-                port:
-                  number: 80
-    - host: henryfranco.com
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: henryfranco-dev
                 port:
                   number: 80
